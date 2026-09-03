@@ -1,0 +1,39 @@
+# Pickle Town Sports Center — Netlify config
+#
+# Netlify runs the build itself on every push, so you never run it by hand.
+# It executes `node build.js`, which turns index.html into the dist folder:
+# markup in one small file, the stylesheet and the app in their own files,
+# comments removed, and the app compiled ahead of time so no visitor has to
+# download Babel.
+
+[build]
+  command = "node build.js"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "18"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "SAMEORIGIN"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+# index.html changes every time you edit it, so don't let browsers cache it
+[[headers]]
+  for = "/index.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+# The stylesheet and the app carry a hash of their contents in the filename,
+# so they can be cached forever — a change gives them a new name.
+[[headers]]
+  for = "/*.css"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.js"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"

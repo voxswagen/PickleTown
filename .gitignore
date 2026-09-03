@@ -1,0 +1,5 @@
+# Netlify builds this on every push — no need to keep it in the repo
+dist/
+
+.DS_Store
+node_modules/
