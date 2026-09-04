@@ -452,19 +452,6 @@ tr:last-child td{border-bottom:none}
   background:linear-gradient(90deg,#2E7F73,#4DB2A4)}
 .tvc.over .tvc-bar i{background:#E7818D}
 
-/* the four names, two across — half the stacked height, so they can be twice the size */
-.tvc-grid{flex:1; min-height:0; display:grid; align-content:center; grid-template-columns:1fr 1fr;
-  gap:.2vw 1.2vw; padding:.7vw 0 0; overflow:hidden}
-.tvc-grid>div,.tvc-pair>div{font-family:var(--serif); font-weight:600; line-height:1.25;
-  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-  font-size:var(--tvname, clamp(20px,2.5vw,58px))}
-.tvc-grid.matched{display:flex; flex-direction:column; justify-content:center; gap:.5vw}
-.tvc-pair{display:grid; grid-template-columns:1fr 1fr; gap:.2vw 1.2vw}
-.tvc-vs{display:flex; align-items:center; gap:.7vw}
-.tvc-vs::before,.tvc-vs::after{content:""; height:1px; flex:1; background:rgba(253,249,245,.16)}
-.tvc-vs span{font-size:clamp(9px,.7vw,15px); font-weight:700; letter-spacing:.24em;
-  text-transform:uppercase; color:#E7818D}
-.tvc-open{grid-column:1 / -1; text-align:center; color:#5E7B76; font-size:clamp(12px,1.1vw,24px)}
 .tvc-hand{flex:none; margin-top:.6vw; padding-top:.7vw; border-top:1px solid rgba(231,129,141,.35);
   display:flex; align-items:center; gap:.7vw; min-width:0}
 .tvc-hand span{font-size:clamp(8px,.66vw,14px); font-weight:700; letter-spacing:.2em;
@@ -491,15 +478,13 @@ tr:last-child td{border-bottom:none}
   text-transform:uppercase; color:#E7818D}
 .tvr-nexthead span{margin-left:auto; font-size:clamp(8px,.68vw,14px); font-weight:700;
   letter-spacing:.14em; text-transform:uppercase; color:rgba(253,249,245,.6); white-space:nowrap}
-.tvr-nextnames{display:grid; grid-template-columns:1fr 1fr; gap:.2vw .9vw; margin-top:.6vw}
-.tvr-nextnames>div{font-family:var(--serif); font-weight:600; font-size:clamp(15px,1.55vw,36px);
-  line-height:1.3; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.tvr-nextnames{display:grid; grid-template-columns:1fr 1fr; gap:.5vw .9vw; margin-top:.7vw}
 .tvr-empty{font-family:var(--serif); font-size:clamp(14px,1.3vw,30px); margin-top:.5vw;
   color:rgba(253,249,245,.75)}
 .tvr-list{flex:1; min-height:0; display:flex; flex-direction:column; gap:.45vw; overflow:hidden;
   transition:opacity .5s ease, transform .5s ease}
 .tvr-list.dim{opacity:0; transform:translateY(-1vw)}
-.tvr-row{display:flex; align-items:center; gap:.7vw; padding:.55vw .8vw; border-radius:.7vw;
+.tvr-row{display:flex; align-items:center; gap:.55vw; padding:.55vw .7vw; border-radius:.7vw;
   background:rgba(253,249,245,.045); border:1px solid rgba(253,249,245,.09);
   min-height:0; flex:1 1 0; max-height:6vw; overflow:hidden}
 .tvr-ord{flex:none; width:1.7vw; height:1.7vw; min-width:24px; min-height:24px; border-radius:50%;
@@ -521,6 +506,88 @@ tr:last-child td{border-bottom:none}
 .tvr-rule{flex:none; padding:.7vw 1vw; border-radius:.7vw; background:rgba(77,178,164,.1);
   border:1px solid rgba(77,178,164,.28); font-size:clamp(10px,.72vw,16px); line-height:1.5;
   color:rgba(253,249,245,.75)}
+
+/* ---------- faces ---------- */
+.face{display:grid; place-items:center; flex:none; border-radius:50%;
+  border:.09vw solid currentColor; font-family:var(--sans); font-weight:700;
+  letter-spacing:.03em; line-height:1; user-select:none;
+  box-shadow:0 .35vw .9vw -.45vw rgba(0,0,0,.75)}
+.face.empty{border-style:dashed; border-color:rgba(253,249,245,.22);
+  background:rgba(253,249,245,.03); box-shadow:none}
+
+/* ---------- the court card as an actual court ----------
+   Four players standing in their corners with the net between them, so a glance
+   tells you who is partnered with whom without reading a word. */
+@keyframes tvNet{0%,100%{opacity:.24}50%{opacity:.5}}
+@keyframes tvRallyA{0%,100%{left:24%;top:28%}50%{left:76%;top:72%}}
+@keyframes tvRallyB{0%,100%{left:24%;top:72%}50%{left:76%;top:28%}}
+@keyframes tvRallyC{0%,100%{left:24%;top:30%}50%{left:76%;top:34%}}
+@keyframes tvRallyD{0%,100%{left:24%;top:28%}25%{left:76%;top:30%}50%{left:26%;top:72%}75%{left:76%;top:70%}}
+@keyframes tvHop{0%,50%,100%{transform:translateY(0) scale(1)}25%,75%{transform:translateY(-1.5vw) scale(.88)}}
+@keyframes tvSwayL{0%,50%,100%{transform:translate(0,0)}25%{transform:translate(-.3vw,.14vw)}75%{transform:translate(.26vw,-.1vw)}}
+@keyframes tvSwayR{0%,50%,100%{transform:translate(0,0)}25%{transform:translate(-.26vw,-.1vw)}75%{transform:translate(.3vw,.14vw)}}
+
+.tvc-plot{position:relative; flex:1; min-height:0; margin-top:.7vw}
+.tvc-fx{position:absolute; inset:0; overflow:hidden; pointer-events:none; z-index:0}
+.tvc-fx .lines{position:absolute; left:1.5%; right:1.5%; top:2%; bottom:2%; border-radius:.4vw;
+  border:1px solid rgba(253,249,245,.07)}
+.tvc-fx .lines::after{content:""; position:absolute; left:0; right:0; top:50%; height:1px;
+  background:rgba(253,249,245,.05)}
+.tvc-fx .net{position:absolute; left:50%; top:0; bottom:0; width:1px;
+  background:repeating-linear-gradient(180deg,rgba(253,249,245,.55) 0 .28vw,transparent .28vw .58vw);
+  animation:tvNet 2.6s ease-in-out infinite}
+.tvc.over .tvc-fx .net{background:repeating-linear-gradient(180deg,rgba(231,129,141,.6) 0 .28vw,transparent .28vw .58vw)}
+.tvc-ball{position:absolute; left:24%; top:28%; width:.5vw; height:.5vw; min-width:6px; min-height:6px;
+  margin:-.25vw 0 0 -.25vw; z-index:1}
+.tvc-ball i{display:block; width:100%; height:100%; border-radius:50%; background:#F2E9A0;
+  box-shadow:0 0 .9vw .1vw rgba(242,233,160,.6); animation:tvHop 3.4s ease-in-out infinite}
+
+.tvc-spot{position:absolute; width:46%; height:44%; z-index:1;
+  display:flex; align-items:center; justify-content:center; text-align:center}
+.tvc-spot.a{left:1.5%;  top:3%}
+.tvc-spot.b{left:1.5%;  top:53%}
+.tvc-spot.c{right:1.5%; top:3%}
+.tvc-spot.d{right:1.5%; top:53%}
+.tvc-spot.a>*,.tvc-spot.b>*{animation:tvSwayL 3.4s ease-in-out infinite}
+.tvc-spot.c>*,.tvc-spot.d>*{animation:tvSwayR 3.4s ease-in-out infinite}
+.tvc-fig{display:flex; flex-direction:column; align-items:center; gap:.4vw; max-width:100%; min-width:0}
+.tvc-face{width:var(--facesz); height:var(--facesz); min-width:30px; min-height:30px;
+  font-size:calc(var(--facesz) * .38)}
+.tvc-who{font-family:var(--serif); font-weight:600; line-height:1.16; max-width:100%;
+  /* wrap at the space, never mid-name — a broken surname reads as a typo from
+     across a hall. Three lines is the most a corner has room for. */
+  overflow-wrap:break-word; hyphens:none; display:-webkit-box; -webkit-box-orient:vertical;
+  -webkit-line-clamp:3; overflow:hidden;
+  font-size:calc(var(--tvname, 2.5vw) * .6)}
+.tvc-vsmark{position:absolute; left:50%; top:50%; z-index:2; transform:translate(-50%,-50%);
+  font-size:clamp(10px,.82vw,18px); font-weight:700; letter-spacing:.18em; text-transform:uppercase;
+  color:#E7818D; background:rgba(11,22,20,.92); border:1px solid rgba(231,129,141,.45);
+  padding:.22vw .7vw; border-radius:999px}
+.tvc-open{position:absolute; inset:0; z-index:1; display:grid; place-items:center;
+  color:#5E7B76; font-size:clamp(12px,1.1vw,24px)}
+
+/* the handoff line carries the faces of whoever is walking on */
+.tvc-hand .hf{display:flex; align-items:center; flex:none; padding-left:.4vw}
+.tvc-hand .hf .face{width:1.5vw; height:1.5vw; min-width:18px; min-height:18px;
+  font-size:.53vw; border-width:.11vw; margin-left:-.36vw}
+.tvc-hand .hf .face:first-child{margin-left:0}
+
+/* ---------- faces in the queue rail ---------- */
+.tvr-nextnames>div{display:flex; align-items:center; gap:.5vw; min-width:0}
+.tvr-nextnames .face{width:2.3vw; height:2.3vw; min-width:26px; min-height:26px; font-size:.82vw}
+.tvr-nextnames b{font-family:var(--serif); font-weight:600; min-width:0; line-height:1.2;
+  font-size:clamp(13px,1.25vw,28px); overflow-wrap:break-word;
+  display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; overflow:hidden}
+.tvr-cluster{display:flex; align-items:center; flex:none}
+.tvr-cluster .face{width:1.45vw; height:1.45vw; min-width:17px; min-height:17px;
+  font-size:.52vw; border-width:.12vw; margin-left:-.44vw}
+.tvr-cluster .face:first-child{margin-left:0}
+
+@media (max-aspect-ratio:1/1){ .tvr-nextnames{grid-template-columns:1fr} }
+@media (prefers-reduced-motion:reduce){
+  .tvc-ball i,.tvc-fx .net,.tvc-spot>*{animation:none}
+}
+
 
 /* a phone or a small laptop opening the board: one column, no rail alongside */
 @media (max-aspect-ratio:1/1){
@@ -1493,6 +1560,15 @@ tr:last-child td{border-bottom:none}
   .hero-facts{gap:18px}
 }
 @media (prefers-reduced-motion:reduce){*{animation:none !important; transition:none !important}}
+
+/* An unfilled seat in a stack — on the board, on the player's phone, anywhere.
+   Lowercase, italic and dropped right back so it reads as an absence rather
+   than as somebody called Open Spot. It sits inside lists whose own <em> rules
+   would otherwise turn it into a pink block capital, so it goes last and names
+   the element: it has to beat them everywhere it appears. */
+em.openspot, .openspot{display:inline; font-style:italic; font-weight:400; opacity:.45;
+  letter-spacing:.01em; text-transform:none; color:inherit; font-size:inherit;
+  margin:0; padding:0}
 </style>
 </head>
 <body>
@@ -1561,6 +1637,31 @@ const durLabel = m => {
 /* An unfilled seat in a stack. Lowercase, italic and dimmed so it reads as an
    absence rather than as a player called Open Spot. */
 const OPEN_SPOT = <em className="openspot">open spot</em>;
+
+/* A face for a player. There are no photographs in the app, so this is their
+   initials on a disc tinted from their own name — the same colour every night,
+   which is the whole point: across a hall you recognise the colour before you
+   have read the name. */
+const FACE_TINTS = [
+  ["rgba(77,178,164,.2)",  "#5CC9BA"],
+  ["rgba(231,129,141,.2)", "#EE96A2"],
+  ["rgba(233,196,106,.2)", "#E9C46A"],
+  ["rgba(138,160,220,.2)", "#9BB0E4"],
+  ["rgba(196,150,214,.2)", "#C79BD8"],
+  ["rgba(126,196,140,.2)", "#8ED49E"],
+];
+const faceHash = t => { let h = 0; for (let i=0;i<t.length;i++) h = (h*31 + t.charCodeAt(i)) >>> 0; return h; };
+const initialsOf = t => {
+  const w = String(t||"").trim().split(/\s+/).filter(Boolean);
+  if (!w.length) return "";
+  return ((w[0][0]||"") + (w.length>1 ? w[w.length-1][0] : "")).toUpperCase();
+};
+function Face({name, className, style}){
+  if (!name) return <span className={"face empty "+(className||"")} style={style}/>;
+  const [bg, fg] = FACE_TINTS[faceHash(name) % FACE_TINTS.length];
+  return <span className={"face "+(className||"")} title={name}
+    style={{...(style||{}), background:bg, color:fg}}>{initialsOf(name)}</span>;
+}
 /* Array.join stringifies elements, so nodes have to be interleaved by hand */
 const joinNodes = (arr, sep) => arr.map((x,i) =>
   <React.Fragment key={i}>{i ? sep : null}{x}</React.Fragment>);
@@ -3831,9 +3932,39 @@ function rotate(s, court, autoStart = true){
   const free = x => !(x.units||[]).some(id =>
     (idx[id] ? (idx[id].all || idx[id].members) : []).some(pid => busyNow.has(pid)));
   const at = (next.pending||[]).findIndex(x => sizeOfUnits(x.units, idx) === 4 && free(x));
-  if (at >= 0){
-    const stack = next.pending[at];
-    next.pending = next.pending.filter((_,i) => i !== at);
+  let stack = at >= 0 ? next.pending[at] : null;
+  let fromPending = at;
+
+  /* The four who just came off are put back together as a stack, so on a quiet
+     night they were the only COMPLETE stack and walked straight back on —
+     jumping anyone waiting in a stack of two or three, who then never played.
+     If the stack we picked is the one that just finished and somebody else is
+     free, build the four from the front of the queue instead. That is the rule
+     the queue is meant to run on: whoever is at the head of the line goes on. */
+  const backNow = cur ? unitsFor(next, [...cur.teamA, ...cur.teamB].filter(Boolean)) : [];
+  const sameFour = stack && backNow.length && stack.units.length === backNow.length
+    && stack.units.every(u => backNow.indexOf(u) >= 0);
+  const freeUnit = u => u && !(u.all || u.members).some(pid => busyNow.has(pid));
+  const othersWaiting = (next.queue||[])
+    .some(id => backNow.indexOf(id) < 0 && freeUnit(idx[id]));
+  if (sameFour && othersWaiting){ stack = null; fromPending = -1; }
+
+  /* Nothing complete to send on — take the first units in the queue that add up
+     to exactly four. This mixes whoever was waiting with the players who have
+     been resting longest, instead of leaving the court empty. */
+  if (!stack){
+    const avail = (next.queue||[]).map(id => idx[id]).filter(freeUnit);
+    const picked = fillCourt(avail, 4);
+    if (picked) stack = {id:makeId(), units:picked.map(u => u.id)};
+  }
+
+  if (stack){
+    if (fromPending >= 0) next.pending = next.pending.filter((_,i) => i !== fromPending);
+    /* whoever is going on must not be left sitting in another stack as well */
+    next.pending = (next.pending||[]).map(x => {
+      const kept = (x.units||[]).filter(id => stack.units.indexOf(id) < 0);
+      return kept.length === (x.units||[]).length ? x : {...x, units:kept, teams:null};
+    });
     const chosen = stack.units.map(id => idx[id]).filter(Boolean);
     const st = statsFrom(next);
     const [A,B] = stack.teams || makeTeams(resolve(chosen, st), st);
@@ -4339,10 +4470,22 @@ function OpenPlay({admin, say}){
 
 
   const finish = court => {
+    const before = ((cur.live||{})[court] || {});
     const next = rotate(cur, court, true);
     save(next);
     const g = (next.live||{})[court];
-    if (g) shout({type:"announce", text: callGame(g, `${CLUB.courts[court]}, walk on now.`)});
+    if (g){
+      shout({type:"announce", text: callGame(g, `${CLUB.courts[court]}, walk on now.`)});
+      /* tell the desk who walked on — with a short queue the same faces can come
+         straight back, and without this it looks as though nothing happened */
+      const who = [g.teamA[0], g.teamA[1], g.teamB[0], g.teamB[1]].filter(Boolean).map(name);
+      const stayed = [...(before.teamA||[]), ...(before.teamB||[])]
+        .filter(id => [...g.teamA, ...g.teamB].includes(id)).length;
+      say(`${CLUB.courts[court]} — ${listNames(who)} on`
+        + (stayed ? ` · ${stayed} stayed on, nobody else was free` : ""));
+    } else {
+      say(`${CLUB.courts[court]} is free — not enough players waiting to fill it`);
+    }
   };
   const bumpTimer = (court, delta) => {
     const g = (cur.live||{})[court];
@@ -5346,6 +5489,7 @@ function TVScreen(){
 
   const name = id => (s.players.find(p=>p.id===id)||{}).name || "—";
   const nm = id => id ? name(id) : OPEN_SPOT;
+  const nmStr = id => id ? name(id) : "";
   const matched = isMatched(s);
   const scored = byScore(s);
   const deck = onDeck(s, 60);
@@ -5385,6 +5529,15 @@ function TVScreen(){
   /* a court that is over hands off to the next stack in line, in order */
   const handoffFor = c => { const i = finished.indexOf(c); return i >= 0 ? games[i] : null; };
   const four = g => [g.teamA[0],g.teamA[1],g.teamB[0],g.teamB[1]];
+  const spot = (pid, at) => (
+    <div className={"tvc-spot "+at}>
+      <div className="tvc-fig">
+        <Face name={nmStr(pid)} className="tvc-face"/>
+        <div className="tvc-who">{nm(pid)}</div>
+      </div>
+    </div>
+  );
+  const faces = g => four(g).map((pid,k)=><Face key={k} name={nmStr(pid)}/>);
   const sep = matched ? " & " : " · ";
 
   return (
@@ -5458,22 +5611,24 @@ function TVScreen(){
                     : over ? "Rotating" : raw==null ? (g ? "Ready" : "—:—") : mmss(raw)}</span>
                 </div>
                 {!scored && <div className="tvc-bar"><i style={{width:(pctLeft*100)+"%"}}/></div>}
-                {!g ? (
-                  <div className="tvc-grid"><div className="tvc-open">Court open</div></div>
-                ) : matched ? (
-                  <div className="tvc-grid matched">
-                    <div className="tvc-pair"><div>{nm(g.teamA[0])}</div><div>{nm(g.teamA[1])}</div></div>
-                    <div className="tvc-vs"><span>vs</span></div>
-                    <div className="tvc-pair"><div>{nm(g.teamB[0])}</div><div>{nm(g.teamB[1])}</div></div>
-                  </div>
-                ) : (
-                  <div className="tvc-grid">
-                    {four(g).map((pid,k)=><div key={k}>{nm(pid)}</div>)}
-                  </div>
-                )}
+                <div className="tvc-plot" style={{"--facesz": big ? "3.3vw" : "2.4vw"}}>
+                  <div className="tvc-fx" aria-hidden="true"><i className="lines"/><i className="net"/></div>
+                  {!g ? <div className="tvc-open">Court open</div> : <>
+                    {/* the rally: a different path per court so three cards side by
+                        side don't beat in unison, and gone the moment time is up */}
+                    {!over && <div className="tvc-ball" aria-hidden="true"
+                      style={{animation:`tvRally${"ABCD"[court%4]} ${3.2+(court%3)*.6}s ease-in-out infinite`}}><i/></div>}
+                    {spot(g.teamA[0],"a")}
+                    {spot(g.teamA[1],"b")}
+                    {spot(g.teamB[0],"c")}
+                    {spot(g.teamB[1],"d")}
+                    {matched && <span className="tvc-vsmark">vs</span>}
+                  </>}
+                </div>
                 {ho && (
                   <div className="tvc-hand">
                     <span>Court goes to</span>
+                    <span className="hf">{faces(ho)}</span>
                     <b>{joinNodes(four(ho).map(nm), " · ")}</b>
                   </div>
                 )}
@@ -5494,7 +5649,8 @@ function TVScreen(){
               {nx && <span>{nx.full ? cue : `Waiting on ${4-nx.players.length} more`}</span>}
             </div>
             {nx
-              ? <div className="tvr-nextnames">{four(nx).map((pid,k)=><div key={k}>{nm(pid)}</div>)}</div>
+              ? <div className="tvr-nextnames">{four(nx).map((pid,k)=>(
+                  <div key={k}><Face name={nmStr(pid)}/><b>{nm(pid)}</b></div>))}</div>
               : <div className="tvr-empty">Everyone is on court</div>}
           </div>
 
@@ -5504,11 +5660,12 @@ function TVScreen(){
               return (
                 <div className="tvr-row" key={g.stackId}>
                   <span className="tvr-ord">{ord}</span>
+                  <span className="tvr-cluster">{faces(g)}</span>
                   <div className="tvr-who">
                     <div>{joinNodes([nm(g.teamA[0]), nm(g.teamA[1])], sep)}</div>
                     <div>{joinNodes([nm(g.teamB[0]), nm(g.teamB[1])], sep)}</div>
                   </div>
-                  <span className="tvr-eta">~{Math.round((ord-1) * (s.gameLength||DEFAULT_GAME_MIN) / Math.max(1,n))} min</span>
+                  <span className="tvr-eta">~{Math.round((ord-1) * (s.gameLength||DEFAULT_GAME_MIN) / Math.max(1,n))}m</span>
                 </div>
               );
             })}
