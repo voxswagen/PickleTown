@@ -1626,6 +1626,25 @@ tr:last-child td{border-bottom:none}
 em.openspot, .openspot{display:inline; font-style:italic; font-weight:400; opacity:.45;
   letter-spacing:.01em; text-transform:none; color:inherit; font-size:inherit;
   margin:0; padding:0}
+
+/* ---------- touch ----------
+   iOS Safari zooms the whole page whenever you focus a field computing under
+   16px, and leaves you scrolled somewhere else when you're done. Every field
+   here is smaller than that by design, so on a touch screen they all go to
+   16px. Pointer:coarse means nothing on a desktop changes. */
+@media (pointer:coarse){
+  input,select,textarea,
+  .filters input,.filters select,
+  .field input,.field select,.field textarea,
+  .pv-search input,
+  .chip-p.editing input,
+  .dc-srow input,.dc-srow input.find,.dc-p input,
+  .dc-settings .stepper input,
+  .mb-field input,.mb-field textarea{font-size:16px}
+}
+/* and stop a double tap on a control zooming instead of pressing it. Pinch to
+   zoom still works — this only opts controls out of the double-tap gesture. */
+button,a,label,summary,[role="button"]{touch-action:manipulation}
 </style>
 </head>
 <body>
@@ -1694,6 +1713,20 @@ const durLabel = m => {
 /* An unfilled seat in a stack. Lowercase, italic and dimmed so it reads as an
    absence rather than as a player called Open Spot. */
 const OPEN_SPOT = <em className="openspot">open spot</em>;
+
+/* The same ball that rallies on the board. It used to be the character U+25B6,
+   which iOS renders as a colour emoji — a blue plastic triangle sitting in the
+   middle of a hand-set card. Drawn, it inherits the badge's own colour. */
+const BALL_ICON = (
+  <svg viewBox="0 0 24 24" width="27" height="27" aria-hidden="true" focusable="false">
+    <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" strokeWidth="1.9"/>
+    <circle cx="12"   cy="7.9"  r="1.15" fill="currentColor"/>
+    <circle cx="8.3"  cy="10.7" r="1.15" fill="currentColor"/>
+    <circle cx="15.7" cy="10.7" r="1.15" fill="currentColor"/>
+    <circle cx="9.7"  cy="15"   r="1.15" fill="currentColor"/>
+    <circle cx="14.3" cy="15"   r="1.15" fill="currentColor"/>
+  </svg>
+);
 
 /* A face for a player. There are no photographs in the app, so this is their
    initials on a disc tinted from their own name — the same colour every night,
@@ -5893,7 +5926,7 @@ function StackView(){
           {me && me.onCourt != null && (
             <div className="pv-me on">
               <div className="pv-me-row">
-                <span className="pv-badge live">▶</span>
+                <span className="pv-badge live">{BALL_ICON}</span>
                 <div>
                   <em>You're on court</em>
                   <b>{CLUB.courts[me.court]}</b>
