@@ -604,6 +604,10 @@ tr:last-child td{border-bottom:none}
 .tvc-spot.d{grid-area:2 / 2}
 .tvc-spot.a>*,.tvc-spot.b>*{animation:tvSwayL 3.4s ease-in-out infinite}
 .tvc-spot.c>*,.tvc-spot.d>*{animation:tvSwayR 3.4s ease-in-out infinite}
+/* Nobody is playing: the clock is stopped or the game is done. Everything on
+   the card holds still, so a glance tells you which courts are live without
+   reading a word of it. */
+.tvc-plot.still .tvc-spot>*,.tvc-plot.still .net{animation:none}
 .tvc-fig{display:flex; flex-direction:column; align-items:center; justify-content:center;
   gap:.4vw; max-width:100%; min-width:0; max-height:100%}
 .tvc-face{width:var(--facesz); height:var(--facesz); min-width:30px; min-height:30px;
@@ -739,11 +743,15 @@ tr:last-child td{border-bottom:none}
   display:grid; place-items:center; font-family:var(--serif); font-size:24px; line-height:1;
   animation:pvring 2.2s infinite; box-shadow:0 0 0 0 rgba(231,129,141,.7)}
 .pv-badge.live{background:var(--teal-deep); font-size:19px; animation:none}
-.pv-me-row em{display:block; font-style:normal; font-size:9.5px; font-weight:700; letter-spacing:.16em;
-  text-transform:uppercase; color:var(--pink-deep)}
-.pv-me.on .pv-me-row em{color:var(--teal-deep)}
-.pv-me-row b{display:block; font-family:var(--serif); font-size:19px; line-height:1.25; margin-top:5px}
-.pv-me-row span{display:block; font-size:12.5px; color:var(--soft); margin-top:4px}
+/* These three describe the text column beside the badge, so they are aimed at
+   it directly. Written loosely they also hit the badge itself -- a <span> in
+   the same row -- which flattened the circle's number to 12.5px in the corner;
+   and they reach into the <b> to catch an "open spot" that belongs italic. */
+.pv-me-row>div>em{display:block; font-style:normal; font-size:9.5px; font-weight:700;
+  letter-spacing:.16em; text-transform:uppercase; color:var(--pink-deep)}
+.pv-me.on .pv-me-row>div>em{color:var(--teal-deep)}
+.pv-me-row>div>b{display:block; font-family:var(--serif); font-size:19px; line-height:1.25; margin-top:5px}
+.pv-me-row>div>span{display:block; font-size:12.5px; color:var(--soft); margin-top:4px}
 .pv-acts{display:flex; gap:8px; margin-top:14px}
 .pv-btn{flex:1; padding:11px; border-radius:999px; background:var(--pink); border:1.5px solid var(--pink);
   color:#fff; font-size:13px; font-weight:600}
@@ -5674,7 +5682,7 @@ function TVScreen(){
                     : over ? "Rotating" : raw==null ? (g ? "Ready" : "—:—") : mmss(raw)}</span>
                 </div>
                 {!scored && <div className="tvc-bar"><i style={{width:(pctLeft*100)+"%"}}/></div>}
-                <div className="tvc-plot"
+                <div className={"tvc-plot"+(g && ticking && !over ? "" : " still")}
                   style={{"--facesz": ho ? (big ? "2.5vw" : "1.9vw") : big ? "3.3vw" : "2.4vw"}}>
                   <div className="tvc-fx" aria-hidden="true"><i className="lines"/><i className="net"/></div>
                   {!g ? <div className="tvc-open">Court open</div> : <>
